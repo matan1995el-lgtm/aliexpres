@@ -1,0 +1,733 @@
+/* ===============================================
+   COMPARISON & ADVANCED UI STYLES
+   AliExpress Smart Tracker v2.1
+   =============================================== */
+
+/* ==========================================
+   1. SIDE-BY-SIDE COMPARISON TABLE
+   ========================================== */
+
+.comparison-modal .modal {
+    max-width: 95%;
+    width: 1400px;
+}
+
+.comparison-container {
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+}
+
+.comparison-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.comparison-body {
+    flex: 1;
+    overflow: auto;
+    padding: 24px;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.comparison-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.comparison-table th {
+    padding: 16px 12px;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.comparison-table .field-label {
+    text-align: right;
+    font-weight: 600;
+    background: var(--bg-tertiary);
+    position: sticky;
+    right: 0;
+    z-index: 5;
+}
+
+.comparison-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.comparison-table tbody tr:nth-child(even) {
+    background: var(--bg-primary);
+}
+
+.comparison-table tbody tr:hover {
+    background: var(--bg-hover);
+}
+
+.comparison-table td {
+    padding: 16px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.comparison-table .best-value {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    color: white;
+    font-weight: 700;
+    position: relative;
+}
+
+.comparison-table .best-value::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.comparison-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.score-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.score-excellent {
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+    color: white;
+}
+
+.score-good {
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    color: white;
+}
+
+.score-average {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+}
+
+.score-poor {
+    background: linear-gradient(135deg, #f87171, #ef4444);
+    color: white;
+}
+
+.comparison-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-top: 2px solid var(--border-color);
+    gap: 12px;
+}
+
+/* ==========================================
+   2. ADVANCED SEARCH MODAL
+   ========================================== */
+
+#advancedSearchModal .modal {
+    max-width: 800px;
+}
+
+.badge-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.badge-filters label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.badge-filters label:hover {
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+}
+
+.badge-filters input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.search-results {
+    margin-top: 24px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.result-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+}
+
+.result-item:hover {
+    transform: translateX(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.result-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.result-info {
+    flex: 1;
+}
+
+.result-info h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.result-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.result-meta .price {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.result-meta .score {
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.result-actions button {
+    padding: 8px 12px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.result-actions button:hover {
+    background: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+/* ==========================================
+   3. PRODUCT NOTES MODAL
+   ========================================== */
+
+.add-note {
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+}
+
+.add-note textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    resize: vertical;
+    font-family: 'Rubik', sans-serif;
+    margin-bottom: 12px;
+}
+
+.add-note input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+}
+
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.no-notes {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+.note-item {
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border-right: 4px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.note-item:hover {
+    transform: translateX(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.note-date {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.note-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.note-actions button {
+    padding: 6px 10px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.3s ease;
+}
+
+.note-actions button:hover {
+    background: var(--bg-hover);
+    color: var(--primary-color);
+}
+
+.note-body p {
+    margin: 0 0 12px 0;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.note-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.note-tags .tag {
+    padding: 4px 12px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.note-footer {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.note-footer small {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* ==========================================
+   4. REMINDERS MODAL
+   ========================================== */
+
+.modal-large {
+    max-width: 900px;
+}
+
+.event-reminders {
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    margin: 20px 0;
+}
+
+.event-reminders h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.event-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.event-buttons button {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.event-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.reminders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.no-reminders {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+.reminder-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border-right: 4px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.reminder-item:hover {
+    transform: translateX(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.reminder-item.snoozed {
+    opacity: 0.6;
+    border-right-color: var(--text-secondary);
+}
+
+.reminder-icon {
+    font-size: 32px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.reminder-content {
+    flex: 1;
+}
+
+.reminder-content h4 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.reminder-content p {
+    margin: 0 0 12px 0;
+    color: var(--text-secondary);
+}
+
+.reminder-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.reminder-type {
+    padding: 4px 12px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.reminder-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.reminder-actions button {
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reminder-actions button:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* ==========================================
+   5. BACKUPS MODAL
+   ========================================== */
+
+.backup-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.backups-info {
+    padding: 16px;
+    background: var(--info-bg);
+    border-right: 4px solid var(--info-color);
+    border-radius: var(--radius-md);
+    margin-bottom: 24px;
+}
+
+.backups-info p {
+    margin: 0;
+    color: var(--info-color);
+}
+
+.backups-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.backup-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    transition: all 0.3s ease;
+}
+
+.backup-item:hover {
+    transform: translateX(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.backup-icon {
+    font-size: 32px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.backup-content {
+    flex: 1;
+}
+
+.backup-content h4 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.backup-date {
+    margin: 0 0 12px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.backup-stats {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.backup-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-danger {
+    background: var(--error-color);
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+/* ==========================================
+   6. RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .comparison-modal .modal {
+        max-width: 95%;
+    }
+
+    .comparison-table {
+        font-size: 14px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 10px 8px;
+    }
+
+    .comparison-image {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .comparison-table {
+        font-size: 12px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 8px 6px;
+    }
+
+    .comparison-image {
+        width: 50px;
+        height: 50px;
+    }
+
+    .result-item {
+        flex-direction: column;
+    }
+
+    .result-item img {
+        width: 100%;
+        height: 200px;
+    }
+
+    .reminder-item {
+        flex-direction: column;
+    }
+
+    .backup-item {
+        flex-direction: column;
+    }
+
+    .event-buttons {
+        flex-direction: column;
+    }
+
+    .event-buttons button {
+        width: 100%;
+    }
+}
+
+/* ==========================================
+   7. DARK MODE ADJUSTMENTS
+   ========================================== */
+
+.dark-theme .comparison-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.dark-theme .comparison-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dark-theme .add-note textarea,
+.dark-theme .add-note input {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.dark-theme .result-item:hover,
+.dark-theme .note-item:hover,
+.dark-theme .reminder-item:hover,
+.dark-theme .backup-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}

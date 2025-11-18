@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AliExpress Smart Tracker Pro - מערכת ניהול חכמה מתקדמת</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/extended.css">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body data-theme="default">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h1>AliExpress Smart Tracker Pro</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="scanQRBtn" title="סרוק QR">
+                        <i class="fas fa-qrcode"></i>
+                    </button>
+                    <button class="icon-btn" id="notificationsBtn" title="התראות">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notifCount" style="display:none;">0</span>
+                    </button>
+                    <button class="theme-toggle" id="themeToggle" aria-label="החלף ערכת נושא">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <ul class="nav-list">
+                <li class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>דף הבית</span>
+                </li>
+                <li class="nav-item" data-page="criteria">
+                    <i class="fas fa-filter"></i>
+                    <span>קריטריונים</span>
+                </li>
+                <li class="nav-item" data-page="compare">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>השוואה</span>
+                </li>
+                <li class="nav-item" data-page="favorites">
+                    <i class="fas fa-star"></i>
+                    <span>מועדפים</span>
+                </li>
+                <li class="nav-item" data-page="reports">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>דוחות</span>
+                </li>
+                <li class="nav-item" data-page="achievements">
+                    <i class="fas fa-trophy"></i>
+                    <span>הישגים</span>
+                </li>
+                <li class="nav-item" data-page="archive">
+                    <i class="fas fa-archive"></i>
+                    <span>ארכיון</span>
+                </li>
+                <li class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>הגדרות</span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page active">
+                <div class="dashboard-grid">
+                    <!-- Statistics Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-filter"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="profilesCount">0</h3>
+                                <p>פרופילי חיפוש</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="productsCount">0</h3>
+                                <p>מוצרים מושווים</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="favoritesCount">0</h3>
+                                <p>מוצרים מועדפים</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">
+                                <i class="fas fa-shekel-sign"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalSavings">₪0</h3>
+                                <p>חיסכון כולל</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Smart Recommendations -->
+                    <div class="smart-recommendations" id="smartRecommendations">
+                        <h3><i class="fas fa-lightbulb"></i> המלצות חכמות</h3>
+                        <div class="recommendations-list" id="recommendationsList">
+                            <!-- יוצג דינמית -->
+                        </div>
+                    </div>
+
+                    <!-- Welcome Section -->
+                    <div class="welcome-section">
+                        <div class="welcome-card">
+                            <h2>ברוכים הבאים למערכת Pro! 🎉</h2>
+                            <p>המערכת המתקדמת ביותר לניהול קניות מ-AliExpress</p>
+                            <div class="quick-actions">
+                                <button class="btn btn-primary" onclick="navigateToPage('criteria')">
+                                    <i class="fas fa-plus"></i>
+                                    צור פרופיל
+                                </button>
+                                <button class="btn btn-secondary" onclick="navigateToPage('compare')">
+                                    <i class="fas fa-search"></i>
+                                    השווה מוצרים
+                                </button>
+                                <button class="btn btn-secondary" onclick="openQRScanner()">
+                                    <i class="fas fa-qrcode"></i>
+                                    סרוק QR
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="recent-activity">
+                        <h3><i class="fas fa-clock"></i> פעילות אחרונה</h3>
+                        <div id="recentActivity" class="activity-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Criteria Page - מורחב עם כל הקריטריונים -->
+            <div id="criteria-page" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-filter"></i> קריטריוני חיפוש</h2>
+                    <button class="btn btn-primary" onclick="openProfileModal()">
+                        <i class="fas fa-plus"></i>
+                        פרופיל חדש
+                    </button>
+                </div>
+                <div id="profilesList" class="profiles-grid"></div>
+            </div>
+
+            <!-- Compare Page - מורחב עם תמונות ומפרטים -->
+            <div id="compare-page" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-balance-scale"></i> השוואת מוצרים מתקדמת</h2>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="openProductModal()">
+                            <i class="fas fa-plus"></i>
+                            הוסף מוצר
+                        </button>
+                        <button class="btn btn-secondary" onclick="openCameraModal()">
+                            <i class="fas fa-camera"></i>
+                            צלם מוצר
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportToExcel()">
+                            <i class="fas fa-file-excel"></i>
+                            ייצא
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Advanced Filters -->
+                <div class="advanced-filters-section">
+                    <button class="btn btn-secondary btn-sm" onclick="toggleAdvancedFilters()">
+                        <i class="fas fa-sliders-h"></i>
+                        פילטרים מתקדמים
+                    </button>
+                    <div id="advancedFilters" class="advanced-filters" style="display: none;">
+                        <div class="filter-row">
+                            <label>
+                                <input type="checkbox" id="filterFreeShipping">
+                                משלוח חינם בלבד
+                            </label>
+                            <label>
+                                <input type="checkbox" id="filterHighRating">
+                                דירוג מעל 4.5
+                            </label>
+                            <label>
+                                <input type="checkbox" id="filterFastShipping">
+                                משלוח מהיר (פחות מ-15 ימים)
+                            </label>
+                        </div>
+                        <div class="filter-row">
+                            <label>
+                                מחיר מקסימלי: 
+                                <input type="number" id="filterMaxPrice" placeholder="100">
+                            </label>
+                            <label>
+                                הזמנות מינימום:
+                                <input type="number" id="filterMinOrders" placeholder="500">
+                            </label>
+                            <button class="btn btn-primary btn-sm" onclick="applyAdvancedFilters()">
+                                <i class="fas fa-check"></i>
+                                החל פילטרים
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regular Filters -->
+                <div class="filters-section">
+                    <input type="text" id="searchProducts" class="search-input" placeholder="חפש מוצר...">
+                    <select id="sortProducts" class="filter-select">
+                        <option value="">מיין לפי...</option>
+                        <option value="price-asc">מחיר: נמוך לגבוה</option>
+                        <option value="price-desc">מחיר: גבוה לנמוך</option>
+                        <option value="rating-desc">דירוג: גבוה לנמוך</option>
+                        <option value="orders-desc">הזמנות: רבות למעטות</option>
+                        <option value="score-desc">ציון מומלץ: גבוה לנמוך</option>
+                        <option value="savings-desc">חיסכון: גבוה לנמוך</option>
+                    </select>
+                </div>
+
+                <div id="productsTable" class="products-table-container"></div>
+
+                <!-- Charts Section -->
+                <div id="chartsSection" class="charts-section" style="display: none;">
+                    <h3><i class="fas fa-chart-bar"></i> ניתוח ויזואלי</h3>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h4>השוואת מחירים (כולל מכס)</h4>
+                            <canvas id="priceChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h4>ציון מומלץ</h4>
+                            <canvas id="scoreChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites Page -->
+            <div id="favorites-page" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-star"></i> מוצרים מועדפים</h2>
+                    <button class="btn btn-primary" onclick="openFavoriteModal()">
+                        <i class="fas fa-plus"></i>
+                        הוסף מועדף
+                    </button>
+                </div>
+                <div class="tags-filter" id="tagsFilter"></div>
+                <div id="favoritesList" class="favorites-grid"></div>
+            </div>
+
+            <!-- NEW: Reports Page -->
+            <div id="reports-page" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-chart-pie"></i> דוחות וסטטיסטיקות</h2>
+                    <button class="btn btn-secondary" onclick="exportReportPDF()">
+                        <i class="fas fa-file-pdf"></i>
+                        ייצא דוח
+                    </button>
+                </div>
+
+                <div class="reports-grid">
+                    <!-- Savings Summary -->
+                    <div class="report-card">
+                        <h3><i class="fas fa-piggy-bank"></i> סיכום חיסכון</h3>
+                        <div class="report-content" id="savingsReport">
+                            <div class="report-stat">
+                                <span class="label">חיסכון החודש:</span>
+                                <span class="value" id="monthlySavings">₪0</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">חיסכון כולל:</span>
+                                <span class="value" id="totalSavingsReport">₪0</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">ממוצע חיסכון למוצר:</span>
+                                <span class="value" id="avgSavings">₪0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Analysis -->
+                    <div class="report-card">
+                        <h3><i class="fas fa-tags"></i> ניתוח לפי קטגוריות</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+
+                    <!-- Price Trends -->
+                    <div class="report-card">
+                        <h3><i class="fas fa-chart-line"></i> מגמות מחירים</h3>
+                        <canvas id="trendChart"></canvas>
+                    </div>
+
+                    <!-- Top Products -->
+                    <div class="report-card">
+                        <h3><i class="fas fa-crown"></i> המוצרים המובילים</h3>
+                        <div id="topProducts" class="top-products-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW: Achievements Page -->
+            <div id="achievements-page" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-trophy"></i> הישגים</h2>
+                    <div class="achievements-stats">
+                        <span><i class="fas fa-star"></i> <span id="achievementPoints">0</span> נקודות</span>
+                        <span><i class="fas fa-unlock"></i> <span id="unlockedCount">0</span>/20 הישגים</span>
+                    </div>
+                </div>
+
+                <div class="achievements-grid" id="achievementsList"></div>
+            </div>
+
+            <!-- NEW: Archive Page -->
+            <div id="archive-page" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-archive"></i> ארכיון קניות</h2>
+                    <button class="btn btn-secondary" onclick="exportArchiveExcel()">
+                        <i class="fas fa-file-excel"></i>
+                        ייצא ארכיון
+                    </button>
+                </div>
+
+                <div class="archive-stats">
+                    <div class="stat-badge">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="purchasedCount">0</span> מוצרים נקנו
+                    </div>
+                    <div class="stat-badge">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span id="totalSpent">₪0</span> הוצאו
+                    </div>
+                    <div class="stat-badge">
+                        <i class="fas fa-calendar"></i>
+                        ממוצע <span id="avgPurchaseTime">0</span> ימים להחלטה
+                    </div>
+                </div>
+
+                <div id="archiveList" class="archive-grid"></div>
+            </div>
+
+            <!-- NEW: Settings Page -->
+            <div id="settings-page" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-cog"></i> הגדרות מתקדמות</h2>
+                </div>
+
+                <div class="settings-grid">
+                    <!-- Theme Settings -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-palette"></i> ערכת נושא</h3>
+                        <div class="theme-selector">
+                            <button class="theme-btn" data-theme="default">
+                                <div class="theme-preview" style="background: linear-gradient(135deg, #667eea, #764ba2)"></div>
+                                <span>ברירת מחדל</span>
+                            </button>
+                            <button class="theme-btn" data-theme="ocean">
+                                <div class="theme-preview" style="background: linear-gradient(135deg, #0077be, #00a8e8)"></div>
+                                <span>אוקיינוס</span>
+                            </button>
+                            <button class="theme-btn" data-theme="sunset">
+                                <div class="theme-preview" style="background: linear-gradient(135deg, #ff6b35, #f7931e)"></div>
+                                <span>שקיעה</span>
+                            </button>
+                            <button class="theme-btn" data-theme="forest">
+                                <div class="theme-preview" style="background: linear-gradient(135deg, #2d6a4f, #52b788)"></div>
+                                <span>יער</span>
+                            </button>
+                            <button class="theme-btn" data-theme="purple">
+                                <div class="theme-preview" style="background: linear-gradient(135deg, #7209b7, #b5179e)"></div>
+                                <span>סגול</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Currency & Language -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-globe"></i> מטבע ושפה</h3>
+                        <div class="setting-item">
+                            <label>מטבע עיקרי:</label>
+                            <select id="currencySetting">
+                                <option value="ILS">שקל (₪)</option>
+                                <option value="USD">דולר ($)</option>
+                                <option value="EUR">יורו (€)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>שער המרה ($ ל-₪):</label>
+                            <input type="number" id="exchangeRate" value="3.5" step="0.1" min="1">
+                        </div>
+                        <div class="setting-item">
+                            <label>פורמט תאריך:</label>
+                            <select id="dateFormat">
+                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-bell"></i> התראות</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="browserNotifications" checked>
+                                התראות דפדפן
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="priceDropAlerts" checked>
+                                התראה על ירידת מחיר
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="reminderAlerts" checked>
+                                תזכורות לבדיקת מחירים
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>תדירות תזכורות (ימים):</label>
+                            <input type="number" id="reminderFrequency" value="7" min="1" max="30">
+                        </div>
+                    </div>
+
+                    <!-- Display Settings -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-desktop"></i> תצוגה</h3>
+                        <div class="setting-item">
+                            <label>גודל פונט:</label>
+                            <select id="fontSize">
+                                <option value="14">קטן (14px)</option>
+                                <option value="16" selected>רגיל (16px)</option>
+                                <option value="18">גדול (18px)</option>
+                                <option value="20">ענק (20px)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>צפיפות תצוגה:</label>
+                            <select id="density">
+                                <option value="compact">קומפקטי</option>
+                                <option value="comfortable" selected>נוח</option>
+                                <option value="spacious">מרווח</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="showImages" checked>
+                                הצג תמונות בטבלה
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Data Management -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-database"></i> ניהול נתונים</h3>
+                        <div class="setting-buttons">
+                            <button class="btn btn-primary" onclick="exportAllData()">
+                                <i class="fas fa-download"></i>
+                                ייצא כל הנתונים
+                            </button>
+                            <button class="btn btn-secondary" onclick="importData()">
+                                <i class="fas fa-upload"></i>
+                                יבא נתונים
+                            </button>
+                            <button class="btn btn-secondary" onclick="createBackup()">
+                                <i class="fas fa-save"></i>
+                                גיבוי מלא
+                            </button>
+                            <button class="btn btn-danger" onclick="clearAllData()">
+                                <i class="fas fa-trash"></i>
+                                מחק הכל
+                            </button>
+                        </div>
+                        <div class="data-info">
+                            <p>גודל נתונים: <strong id="dataSize">0 KB</strong></p>
+                            <p>עודכן לאחרונה: <strong id="lastUpdated">-</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- About -->
+                    <div class="settings-card">
+                        <h3><i class="fas fa-info-circle"></i> אודות</h3>
+                        <div class="about-info">
+                            <p><strong>גרסה:</strong> 2.0 Pro</p>
+                            <p><strong>תכונות:</strong> 25+ תכונות מתקדמות</p>
+                            <p><strong>פותח עם:</strong> ❤️ בישראל</p>
+                            <button class="btn btn-secondary" onclick="window.open('README.md')">
+                                <i class="fas fa-book"></i>
+                                מדריך שימוש
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-footer">
+                    <button class="btn btn-primary" onclick="saveSettings()">
+                        <i class="fas fa-save"></i>
+                        שמור הגדרות
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetSettings()">
+                        <i class="fas fa-undo"></i>
+                        אפס להגדרות ברירת מחדל
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals will continue... -->
+    <!-- I'll create the extended modals in a separate section for better organization -->
+
+    <!-- Enhanced Product Modal with all new fields -->
+    <div id="productModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3><i class="fas fa-box"></i> הוסף מוצר מתקדם</h3>
+                <button class="modal-close" onclick="closeProductModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="productForm" class="modal-body">
+                <div class="form-tabs">
+                    <button type="button" class="tab-btn active" data-tab="basic">בסיסי</button>
+                    <button type="button" class="tab-btn" data-tab="specs">מפרטים טכניים</button>
+                    <button type="button" class="tab-btn" data-tab="reviews">ביקורות</button>
+                </div>
+
+                <!-- Basic Tab -->
+                <div class="tab-content active" data-tab="basic">
+                    <div class="form-group">
+                        <label>שם המוצר *</label>
+                        <input type="text" name="name" required placeholder="שם המוצר מ-AliExpress">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>מחיר ($) *</label>
+                            <input type="number" name="price" required min="0" step="0.01" placeholder="19.99">
+                        </div>
+                        <div class="form-group">
+                            <label>עלות משלוח ($)</label>
+                            <input type="number" name="shippingCost" min="0" step="0.01" placeholder="0">
+                        </div>
+                    </div>
+
+                    <div class="price-calculator">
+                        <h4><i class="fas fa-calculator"></i> מחשבון מכס ישראלי</h4>
+                        <div class="calc-result">
+                            <span>מחיר כולל: <strong id="totalPrice">$0</strong></span>
+                            <span>מע"מ (17%): <strong id="vatAmount">$0</strong></span>
+                            <span>מכס (12%): <strong id="customsAmount">$0</strong></span>
+                            <span class="highlight">מחיר סופי בישראל: <strong id="finalPriceILS">₪0</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>דירוג (1-5) *</label>
+                            <input type="number" name="rating" required min="1" max="5" step="0.1" placeholder="4.5">
+                        </div>
+                        <div class="form-group">
+                            <label>מספר הזמנות *</label>
+                            <input type="number" name="orders" required min="0" placeholder="1000">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>זמן משלוח (ימים)</label>
+                            <input type="number" name="deliveryDays" min="0" placeholder="15">
+                        </div>
+                        <div class="form-group">
+                            <label>שילוח מ-</label>
+                            <select name="shippingFrom">
+                                <option value="china">סין</option>
+                                <option value="russia">רוסיה</option>
+                                <option value="usa">ארה"ב</option>
+                                <option value="europe">אירופה</option>
+                                <option value="israel">ישראל</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>קטגוריה (זיהוי אוטומטי)</label>
+                        <input type="text" name="category" placeholder="יזוהה אוטומטית מהשם" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>קישור למוצר *</label>
+                        <input type="url" name="link" required placeholder="https://www.aliexpress.com/item/...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>תמונת מוצר</label>
+                        <div class="image-input-group">
+                            <input type="url" name="imageUrl" placeholder="https://... או">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="uploadProductImage()">
+                                <i class="fas fa-camera"></i>
+                                צלם/העלה תמונה
+                            </button>
+                        </div>
+                        <div id="imagePreview" class="image-preview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>הערות</label>
+                        <textarea name="notes" rows="2" placeholder="הערות על המוצר..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Specs Tab -->
+                <div class="tab-content" data-tab="specs">
+                    <h4>מפרטים טכניים</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>גודל/מידות</label>
+                            <input type="text" name="size" placeholder='לדוגמה: 6.1", 15cm x 10cm'>
+                        </div>
+                        <div class="form-group">
+                            <label>משקל</label>
+                            <input type="text" name="weight" placeholder="לדוגמה: 180g, 0.5kg">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>צבעים זמינים</label>
+                            <input type="text" name="colors" placeholder="שחור, לבן, כחול">
+                        </div>
+                        <div class="form-group">
+                            <label>חומר</label>
+                            <input type="text" name="material" placeholder="פלסטיק, מתכת, סיליקון">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>סוללה (mAh)</label>
+                            <input type="number" name="battery" placeholder="4500">
+                        </div>
+                        <div class="form-group">
+                            <label>אחריות (חודשים)</label>
+                            <input type="number" name="warranty" placeholder="12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>תכונות נוספות</label>
+                        <textarea name="features" rows="3" placeholder="Bluetooth 5.0, עמידות למים IP67, ANC..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Reviews Tab -->
+                <div class="tab-content" data-tab="reviews">
+                    <h4>ניתוח ביקורות (ידני)</h4>
+                    <p class="help-text">מלא את הפרטים לפי הביקורות שקראת ב-AliExpress</p>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>ביקורות חיוביות (%)</label>
+                            <input type="number" name="positiveReviews" min="0" max="100" placeholder="95">
+                        </div>
+                        <div class="form-group">
+                            <label>ביקורות עם תמונות</label>
+                            <input type="number" name="photoReviews" min="0" placeholder="450">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>סיכום ביקורות חיוביות</label>
+                        <textarea name="positiveSummary" rows="2" placeholder='לדוגמה: "סאונד מעולה, נוח לאוזן, סוללה טובה"'></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>בעיות נפוצות (אם יש)</label>
+                        <textarea name="commonIssues" rows="2" placeholder='לדוגמה: "5% מתלוננים על סוללה חלשה"'></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>המלצת קונים</label>
+                        <select name="buyerRecommendation">
+                            <option value="">בחר...</option>
+                            <option value="highly">מומלץ מאוד</option>
+                            <option value="recommended">מומלץ</option>
+                            <option value="mixed">חוות דעת מעורבות</option>
+                            <option value="not-recommended">לא מומלץ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>תגובות מיוחדות/חשובות</label>
+                        <textarea name="specialComments" rows="2" placeholder="ציטוטים מביקורות חשובות..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeProductModal()">ביטול</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        שמור מוצר
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- QR Scanner Modal -->
+    <div id="qrScannerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-qrcode"></i> סורק QR / ברקוד</h3>
+                <button class="modal-close" onclick="closeQRScanner()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="scanner-tabs">
+                    <button class="scanner-tab active" data-mode="qr">QR Code</button>
+                    <button class="scanner-tab" data-mode="barcode">ברקוד</button>
+                </div>
+                <div id="scannerContainer">
+                    <video id="scannerVideo" autoplay></video>
+                    <canvas id="scannerCanvas" style="display:none;"></canvas>
+                </div>
+                <div id="scanResult" class="scan-result"></div>
+                <div class="scanner-controls">
+                    <button class="btn btn-primary" onclick="startScanner()">
+                        <i class="fas fa-play"></i>
+                        התחל סריקה
+                    </button>
+                    <button class="btn btn-secondary" onclick="stopScanner()">
+                        <i class="fas fa-stop"></i>
+                        עצור
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Upload Modal -->
+    <div id="cameraModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-camera"></i> צלם מוצר</h3>
+                <button class="modal-close" onclick="closeCameraModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="file" id="cameraInput" accept="image/*" capture="camera" style="display:none;">
+                <div class="camera-options">
+                    <button class="btn btn-primary" onclick="capturePhoto()">
+                        <i class="fas fa-camera"></i>
+                        צלם עכשיו
+                    </button>
+                    <button class="btn btn-secondary" onclick="uploadPhoto()">
+                        <i class="fas fa-upload"></i>
+                        העלה מהגלריה
+                    </button>
+                </div>
+                <div id="capturedImage" class="captured-image"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Center -->
+    <div id="notificationCenter" class="notification-center" style="display:none;">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> התראות</h3>
+            <button class="btn-close" onclick="closeNotifications()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="notificationsList" class="notifications-list">
+            <!-- התראות יוצגו כאן דינמית -->
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+        <div class="spinner"></div>
+        <p>טוען...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/extended.js"></script>
+    <script src="js/scanner.js"></script>
+    <script src="js/achievements.js"></script>
+    <script src="js/reports.js"></script>
+</body>
+</html>

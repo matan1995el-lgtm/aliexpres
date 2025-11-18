@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AliExpress Smart Tracker Extension</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 350px;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        h1 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .status {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .data {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .data h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .data p {
+            margin: 4px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛍️ AliExpress Smart Tracker</h1>
+    
+    <div class="status" id="status">
+        נווט לעמוד מוצר ב-AliExpress
+    </div>
+    
+    <button id="analyzeBtn">📊 נתח ביקורות</button>
+    <button id="copyBtn">📋 העתק נתונים</button>
+    <button id="openApp">🚀 פתח אפליקציה</button>
+    
+    <div class="data" id="dataDisplay" style="display:none;">
+        <h3>תוצאות אחרונות:</h3>
+        <div id="results"></div>
+    </div>
+    
+    <div class="footer">
+        גרסה 1.0.0 | Made with ❤️
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
