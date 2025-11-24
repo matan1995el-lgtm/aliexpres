@@ -54,10 +54,14 @@ class AutoThemeManager {
         
         if (isNightTime && !document.body.classList.contains('dark-theme')) {
             this.applyTheme('dark');
-            showToast('🌙 מצב לילה הופעל אוטומטית', 'info');
+            if (typeof showToast !== 'undefined') {
+                showToast('🌙 מצב לילה הופעל אוטומטית', 'info');
+            }
         } else if (!isNightTime && document.body.classList.contains('dark-theme') && this.settings.currentTheme === 'dark') {
             this.applyTheme('light');
-            showToast('☀️ מצב יום הופעל אוטומטית', 'info');
+            if (typeof showToast !== 'undefined') {
+                showToast('☀️ מצב יום הופעל אוטומטית', 'info');
+            }
         }
     }
 
@@ -160,7 +164,10 @@ class AdvancedSearch {
 
     getProductBadges(product) {
         const badges = [];
-        const avgPrice = store.getProducts().reduce((sum, p) => sum + p.realPrice, 0) / store.getProducts().length;
+        const allProducts = store.getProducts();
+        if (allProducts.length === 0) return badges;
+        
+        const avgPrice = allProducts.reduce((sum, p) => sum + p.realPrice, 0) / allProducts.length;
         
         if (product.realPrice < avgPrice * 0.8) badges.push('hot');
         if (product.deliveryDays <= 10) badges.push('fast');
@@ -583,7 +590,9 @@ class AdvancedReminders {
         }
 
         // הצג גם toast
-        showToast(`🔔 ${reminder.title}: ${reminder.message}`, 'info');
+        if (typeof showToast !== 'undefined') {
+            showToast(`🔔 ${reminder.title}: ${reminder.message}`, 'info');
+        }
     }
 
     // בקש הרשאה להתראות
@@ -705,7 +714,7 @@ class AutoBackup {
         this.lastBackup = Date.now();
         localStorage.setItem('lastBackup', this.lastBackup.toString());
 
-        if (type === 'manual') {
+        if (type === 'manual' && typeof showToast !== 'undefined') {
             showToast('✅ גיבוי נשמר בהצלחה!', 'success');
         }
 
@@ -735,11 +744,15 @@ class AutoBackup {
                 advancedReminders.save();
             }
 
-            showToast('✅ הנתונים שוחזרו בהצלחה!', 'success');
+            if (typeof showToast !== 'undefined') {
+                showToast('✅ הנתונים שוחזרו בהצלחה!', 'success');
+            }
             setTimeout(() => location.reload(), 1000);
             return true;
         } catch (error) {
-            showToast('❌ שגיאה בשחזור הנתונים', 'error');
+            if (typeof showToast !== 'undefined') {
+                showToast('❌ שגיאה בשחזור הנתונים', 'error');
+            }
             return false;
         }
     }
@@ -801,7 +814,9 @@ class ExcelAdvanced {
         link.download = `${filename}_${new Date().toISOString().split('T')[0]}.csv`;
         link.click();
 
-        showToast('✅ Excel ייצא בהצלחה!', 'success');
+        if (typeof showToast !== 'undefined') {
+            showToast('✅ Excel ייצא בהצלחה!', 'success');
+        }
     }
 
     // ייבוא מ-Excel
