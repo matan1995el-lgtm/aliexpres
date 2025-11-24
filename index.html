@@ -258,7 +258,7 @@
                 </div>
             </div>
 
-            <!-- Reports Page - NEW! -->
+            <!-- Reports Page -->
             <div id="reports-page" class="page">
                 <div class="page-header">
                     <h2><i class="fas fa-chart-pie"></i> דוחות וסטטיסטיקות</h2>
@@ -319,7 +319,7 @@
                 </div>
             </div>
 
-            <!-- Achievements Page - NEW! -->
+            <!-- Achievements Page -->
             <div id="achievements-page" class="page">
                 <div class="page-header">
                     <h2><i class="fas fa-trophy"></i> הישגים</h2>
@@ -350,7 +350,7 @@
                 </div>
             </div>
 
-            <!-- Settings Page - NEW! -->
+            <!-- Settings Page -->
             <div id="settings-page" class="page">
                 <div class="page-header">
                     <h2><i class="fas fa-cog"></i> הגדרות</h2>
@@ -453,34 +453,6 @@
                         </div>
                     </div>
 
-                    <!-- Display Options -->
-                    <div class="settings-section">
-                        <h3><i class="fas fa-desktop"></i> תצוגה</h3>
-                        <div class="form-group">
-                            <label>גודל פונט</label>
-                            <select id="fontSize">
-                                <option value="14">קטן (14px)</option>
-                                <option value="16" selected>רגיל (16px)</option>
-                                <option value="18">גדול (18px)</option>
-                                <option value="20">ענק (20px)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>צפיפות תצוגה</label>
-                            <select id="density">
-                                <option value="compact">קומפקטי</option>
-                                <option value="comfortable" selected>נוח</option>
-                                <option value="spacious">מרווח</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="showImages" checked>
-                                הצג תמונות מוצרים
-                            </label>
-                        </div>
-                    </div>
-
                     <!-- Data Management -->
                     <div class="settings-section">
                         <h3><i class="fas fa-database"></i> ניהול נתונים</h3>
@@ -510,7 +482,7 @@
                         <h3><i class="fas fa-info-circle"></i> אודות</h3>
                         <div class="about-info">
                             <p><strong>AliExpress Smart Tracker</strong></p>
-                            <p>גרסה: 2.0.0 - Enhanced Edition</p>
+                            <p>גרסה: 2.2.0 - Enhanced Edition</p>
                             <p>כל התכונות המתקדמות שביקשת! 🚀</p>
                             <p>נבנה עם ❤️ במיוחד בשבילך</p>
                         </div>
@@ -1012,7 +984,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
+                navigator.serviceWorker.register('./service-worker.js')
                     .then(registration => {
                         console.log('✅ Service Worker registered successfully:', registration.scope);
                         
