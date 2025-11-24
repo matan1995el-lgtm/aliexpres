@@ -2,29 +2,228 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>AliExpress Smart Tracker - מערכת ניהול חכמה</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="מערכת ניהול חכמה למוצרים מ-AliExpress - השוואת מחירים, ניתוח ביקורות וניהול קניות חכם">
+    <meta name="keywords" content="AliExpress, קניות, השוואת מחירים, ניהול מוצרים, חכמה, ביקורות">
+    <meta name="author" content="AliExpress Smart Tracker">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- iOS Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="AliTracker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-167.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180.png">
+    <link rel="apple-touch-startup-image" href="/icons/icon-512.png">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-TileImage" content="/icons/icon-144.png">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/icons/icon-32.png">
+    <link rel="shortcut icon" href="/icons/icon-32.png">
+    
+    <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/advanced.css">
-    <link rel="stylesheet" href="css/advanced-animations.css">
-    <link rel="stylesheet" href="css/comparison-ui.css">
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#667eea">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
     
-    <!-- CDN Libraries -->
+    <!-- App CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/advanced.css">
+    <link rel="stylesheet" href="/css/advanced-animations.css">
+    <link rel="stylesheet" href="/css/comparison-ui.css">
+    
+    <!-- JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <style>
+        /* PWA Installation Prompt Styles */
+        .pwa-prompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .pwa-prompt-content {
+            background: var(--bg-primary);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow-xl);
+            border: 2px solid var(--primary-color);
+            animation: slideUp 0.3s ease;
+        }
+
+        .pwa-prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .pwa-prompt-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pwa-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .pwa-close:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .pwa-prompt-body {
+            margin-bottom: 25px;
+        }
+
+        .pwa-prompt-body p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .pwa-instructions {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .pwa-instructions h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .pwa-instructions ol {
+            text-align: right;
+            padding-right: 20px;
+            margin: 0;
+        }
+
+        .pwa-instructions li {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .pwa-instructions strong {
+            color: var(--text-primary);
+        }
+
+        .pwa-prompt-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .pwa-prompt-footer .btn {
+            flex: 1;
+        }
+
+        /* iOS Specific Badge */
+        .ios-badge {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 9999;
+            animation: bounce 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .pwa-prompt {
+                padding: 15px;
+            }
+            
+            .pwa-prompt-content {
+                padding: 20px;
+            }
+            
+            .pwa-prompt-footer {
+                flex-direction: column;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- iOS Badge -->
+    <div id="iosBadge" class="ios-badge">
+        📱 PWA
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="container">
@@ -33,9 +232,14 @@
                     <i class="fas fa-shopping-bag"></i>
                     <h1>AliExpress Smart Tracker</h1>
                 </div>
-                <button class="theme-toggle" id="themeToggle" aria-label="החלף ערכת נושא">
-                    <i class="fas fa-moon"></i>
-                </button>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" aria-label="החלף ערכת נושא">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="pwa-install-btn" id="pwaInstallBtn" aria-label="התקן אפליקציה" style="display: none;">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -357,6 +561,35 @@
                 </div>
 
                 <div class="settings-container">
+                    <!-- PWA Settings -->
+                    <div class="settings-section">
+                        <h3><i class="fas fa-mobile-alt"></i> אפליקציה Progressive Web App</h3>
+                        <div class="form-group">
+                            <label>מצב אפליקציה</label>
+                            <div id="pwaStatus" class="pwa-status">
+                                <span class="status-indicator" id="pwaStatusIndicator">🔄 בודק...</span>
+                                <span id="pwaStatusText">בודק תמיכה ב-PWA</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" onclick="showPWAInstallPrompt()" id="installPWAButton" style="display: none;">
+                                <i class="fas fa-download"></i>
+                                התקן אפליקציה
+                            </button>
+                            <button class="btn btn-secondary" onclick="checkPWAStatus()">
+                                <i class="fas fa-sync"></i>
+                                רענן סטטוס
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="enableOfflineMode" checked>
+                                הפעל מצב לא מקוון
+                            </label>
+                            <small>אפשר שימוש באפליקציה ללא חיבור אינטרנט</small>
+                        </div>
+                    </div>
+
                     <!-- Theme Selection -->
                     <div class="settings-section">
                         <h3><i class="fas fa-palette"></i> ערכת נושא</h3>
@@ -482,9 +715,19 @@
                         <h3><i class="fas fa-info-circle"></i> אודות</h3>
                         <div class="about-info">
                             <p><strong>AliExpress Smart Tracker</strong></p>
-                            <p>גרסה: 2.2.0 - Enhanced Edition</p>
-                            <p>כל התכונות המתקדמות שביקשת! 🚀</p>
+                            <p>גרסה: 3.0.0 - PWA Edition</p>
+                            <p>תמיכה מלאה ב-iOS, Android והתקנה כאפליקציה</p>
                             <p>נבנה עם ❤️ במיוחד בשבילך</p>
+                            <div class="pwa-features">
+                                <h4>תכונות PWA:</h4>
+                                <ul>
+                                    <li>✅ התקנה כאפליקציה native</li>
+                                    <li>✅ עבודה offline</li>
+                                    <li>✅ תמיכה ב-iOS & Android</li>
+                                    <li>✅ התראות push</li>
+                                    <li>✅ טעינה מהירה</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -797,6 +1040,70 @@
         </div>
     </div>
 
+    <!-- PWA Installation Prompt -->
+    <div id="pwaInstallPrompt" class="pwa-prompt">
+        <div class="pwa-prompt-content">
+            <div class="pwa-prompt-header">
+                <h3><i class="fas fa-mobile-alt"></i> התקן את AliTracker</h3>
+                <button class="pwa-close" onclick="closePWAInstallPrompt()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="pwa-prompt-body">
+                <p>הוסף את AliTracker למסך הבית שלך לגישה מהירה וחוויה משופרת!</p>
+                
+                <div class="pwa-instructions">
+                    <div class="ios-instructions" id="iosInstructions">
+                        <h4>📱 למשתמשי iPhone/iPad:</h4>
+                        <ol>
+                            <li>לחץ על <strong>Share</strong> <i class="fas fa-share"></i> (חץ עם ריבוע)</li>
+                            <li>גלול מטה ובחר <strong>"Add to Home Screen"</strong></li>
+                            <li>לחץ <strong>"Add"</strong> בפינה הימנית העליונה</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="android-instructions" id="androidInstructions">
+                        <h4>🤖 למשתמשי Android:</h4>
+                        <ol>
+                            <li>לחץ על <strong>⋮</strong> (שלוש נקודות בפינה העליונה)</li>
+                            <li>בחר <strong>"Add to Home Screen"</strong> או "Install App"</li>
+                            <li>אשר את ההתקנה ולחץ <strong>"Add"</strong></li>
+                        </ol>
+                    </div>
+
+                    <div class="desktop-instructions" id="desktopInstructions">
+                        <h4>💻 למשתמשי Desktop:</h4>
+                        <ol>
+                            <li>לחץ על <strong>Install</strong> בשורת הכתובת של הדפדפן</li>
+                            <li>או לחץ על כפתור ההתקנה באפליקציה</li>
+                            <li>אשר את ההתקנה והאפליקציה תתווסף למחשב שלך</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="pwa-benefits">
+                    <h4>🎯 יתרונות ההתקנה:</h4>
+                    <ul>
+                        <li>✅ גישה מהירה ישירות ממסך הבית</li>
+                        <li>✅ חוויה כמו אפליקציה native</li>
+                        <li>✅ עבודה offline (ללא אינטרנט)</li>
+                        <li>✅ התראות push לעדכונים</li>
+                        <li>✅ טעינה מהירה יותר</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pwa-prompt-footer">
+                <button type="button" class="btn btn-secondary" onclick="closePWAInstallPrompt()">
+                    אולי מאוחר יותר
+                </button>
+                <button type="button" class="btn btn-primary" onclick="installPWA()" id="installPWAButtonPrompt">
+                    <i class="fas fa-download"></i>
+                    התקן עכשיו
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
@@ -971,42 +1278,227 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/main.js"></script>
-    <script src="js/scanner.js"></script>
-    <script src="js/achievements.js"></script>
-    <script src="js/enhanced.js"></script>
-    <script src="js/advanced-features.js"></script>
-    <script src="js/advanced-ui.js"></script>
-    <script src="js/advanced-sharing.js"></script>
-    <script src="js/helper-functions.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scanner.js"></script>
+    <script src="/js/achievements.js"></script>
+    <script src="/js/enhanced.js"></script>
+    <script src="/js/advanced-features.js"></script>
+    <script src="/js/advanced-ui.js"></script>
+    <script src="/js/advanced-sharing.js"></script>
+    <script src="/js/helper-functions.js"></script>
     
-    <!-- Service Worker Registration -->
+    <!-- PWA Installation Logic -->
     <script>
+        // PWA Installation Variables
+        let deferredPrompt;
+        let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        let isAndroid = /Android/.test(navigator.userAgent);
+        let isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                          (window.navigator.standalone !== undefined && window.navigator.standalone);
+        
+        // Initialize PWA features
+        function initializePWA() {
+            console.log('🚀 Initializing PWA Features...');
+            
+            // Check if app is already installed
+            updatePWAStatus();
+            
+            // Show iOS badge if on iOS
+            if (isIOS) {
+                document.getElementById('iosBadge').style.display = 'block';
+            }
+            
+            // Set up install prompt
+            setupInstallPrompt();
+            
+            // Show install prompt after delay if not installed
+            if (!isStandalone) {
+                setTimeout(() => {
+                    showPWAInstallPrompt();
+                }, 5000);
+            }
+            
+            // Listen for app mode changes
+            window.matchMedia('(display-mode: standalone)').addListener(updatePWAStatus);
+        }
+        
+        // Set up the beforeinstallprompt event
+        function setupInstallPrompt() {
+            window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('📱 PWA Install Prompt available');
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                // Show install button
+                const installBtn = document.getElementById('pwaInstallBtn');
+                const installPromptBtn = document.getElementById('installPWAButton');
+                const installPromptBtnPrompt = document.getElementById('installPWAButtonPrompt');
+                
+                if (installBtn) installBtn.style.display = 'block';
+                if (installPromptBtn) installPromptBtn.style.display = 'block';
+                if (installPromptBtnPrompt) installPromptBtnPrompt.style.display = 'block';
+                
+                // Update instructions based on platform
+                updateInstallInstructions();
+            });
+        }
+        
+        // Update install instructions based on platform
+        function updateInstallInstructions() {
+            const iosInstructions = document.getElementById('iosInstructions');
+            const androidInstructions = document.getElementById('androidInstructions');
+            const desktopInstructions = document.getElementById('desktopInstructions');
+            
+            if (isIOS) {
+                if (iosInstructions) iosInstructions.style.display = 'block';
+                if (androidInstructions) androidInstructions.style.display = 'none';
+                if (desktopInstructions) desktopInstructions.style.display = 'none';
+            } else if (isAndroid) {
+                if (iosInstructions) iosInstructions.style.display = 'none';
+                if (androidInstructions) androidInstructions.style.display = 'block';
+                if (desktopInstructions) desktopInstructions.style.display = 'none';
+            } else {
+                if (iosInstructions) iosInstructions.style.display = 'none';
+                if (androidInstructions) androidInstructions.style.display = 'none';
+                if (desktopInstructions) desktopInstructions.style.display = 'block';
+            }
+        }
+        
+        // Show PWA install prompt
+        function showPWAInstallPrompt() {
+            if (isStandalone) {
+                console.log('ℹ️ App is already installed');
+                return;
+            }
+            
+            const prompt = document.getElementById('pwaInstallPrompt');
+            if (prompt) {
+                prompt.style.display = 'flex';
+                console.log('📱 Showing PWA install prompt');
+            }
+        }
+        
+        // Close PWA install prompt
+        function closePWAInstallPrompt() {
+            const prompt = document.getElementById('pwaInstallPrompt');
+            if (prompt) {
+                prompt.style.display = 'none';
+            }
+        }
+        
+        // Install PWA
+        async function installPWA() {
+            if (deferredPrompt) {
+                // For Android/Desktop browsers that support beforeinstallprompt
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                
+                if (outcome === 'accepted') {
+                    console.log('✅ PWA installation accepted');
+                    if (typeof showToast !== 'undefined') {
+                        showToast('✅ האפליקציה הותקנה בהצלחה!', 'success');
+                    }
+                } else {
+                    console.log('❌ PWA installation dismissed');
+                }
+                
+                deferredPrompt = null;
+                closePWAInstallPrompt();
+            } else if (isIOS) {
+                // For iOS, we can only show instructions
+                console.log('📱 Showing iOS installation instructions');
+                if (typeof showToast !== 'undefined') {
+                    showToast('📱 עקוב אחר ההוראות על המסך להתקנה ב-iOS', 'info', 5000);
+                }
+            } else {
+                console.log('ℹ️ PWA installation not available');
+                if (typeof showToast !== 'undefined') {
+                    showToast('ℹ️ התקנת PWA לא זמינה בדפדפן זה', 'info');
+                }
+            }
+        }
+        
+        // Update PWA status display
+        function updatePWAStatus() {
+            const statusIndicator = document.getElementById('pwaStatusIndicator');
+            const statusText = document.getElementById('pwaStatusText');
+            const installBtn = document.getElementById('installPWAButton');
+            
+            if (isStandalone) {
+                if (statusIndicator) statusIndicator.textContent = '✅';
+                if (statusText) statusText.textContent = 'מותקן כאפליקציה';
+                if (installBtn) installBtn.style.display = 'none';
+            } else if (deferredPrompt) {
+                if (statusIndicator) statusIndicator.textContent = '📱';
+                if (statusText) statusText.textContent = 'זמין להתקנה';
+                if (installBtn) installBtn.style.display = 'block';
+            } else {
+                if (statusIndicator) statusIndicator.textContent = '🌐';
+                if (statusText) statusText.textContent = 'פועל בדפדפן';
+                if (installBtn) installBtn.style.display = 'none';
+            }
+        }
+        
+        // Check PWA status (manual refresh)
+        function checkPWAStatus() {
+            updatePWAStatus();
+            if (typeof showToast !== 'undefined') {
+                showToast('🔄 סטטוס PWA עודכן', 'info');
+            }
+        }
+        
+        // Service Worker Registration with PWA features
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(registration => {
-                        console.log('✅ Service Worker registered successfully:', registration.scope);
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('✅ PWA Service Worker registered:', registration.scope);
                         
-                        // בדוק עדכונים
+                        // Check for updates
                         registration.addEventListener('updatefound', () => {
                             const newWorker = registration.installing;
                             newWorker.addEventListener('statechange', () => {
                                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    // גרסה חדשה זמינה
-                                    if (confirm('גרסה חדשה זמינה! רוצה לרענן?')) {
-                                        newWorker.postMessage({ action: 'skipWaiting' });
-                                        window.location.reload();
+                                    console.log('🔄 New PWA version available');
+                                    if (typeof showToast !== 'undefined') {
+                                        showToast('🔄 גרסה חדשה זמינה! רענן את הדף לעדכון.', 'info', 5000);
                                     }
                                 }
                             });
                         });
+                        
+                        // Initialize PWA features after SW registration
+                        initializePWA();
                     })
-                    .catch(error => {
-                        console.warn('⚠️ Service Worker registration failed:', error);
+                    .catch((error) => {
+                        console.warn('⚠️ PWA Service Worker registration failed:', error);
+                        // Initialize PWA features even if SW fails
+                        initializePWA();
                     });
             });
+        } else {
+            console.log('ℹ️ Service Worker not supported');
+            // Initialize basic PWA features
+            initializePWA();
         }
+        
+        // Listen for online/offline events
+        window.addEventListener('online', () => {
+            console.log('✅ App is online');
+            if (typeof showToast !== 'undefined') {
+                showToast('✅ חיבור אינטרנט חודש', 'success');
+            }
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('⚠️ App is offline');
+            if (typeof showToast !== 'undefined') {
+                showToast('⚠️ אתה במצב לא מקוון', 'warning');
+            }
+        });
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializePWA);
     </script>
 </body>
 </html>

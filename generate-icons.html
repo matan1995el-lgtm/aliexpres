@@ -2,145 +2,612 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>יצירת אייקונים - AliExpress Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>יצירת אייקונים - AliExpress Smart Tracker</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Rubik', sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            text-align: center;
-            padding: 50px;
+            min-height: 100vh;
+            padding: 40px 20px;
             direction: rtl;
         }
+        
         .container {
-            max-width: 600px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: rgba(255,255,255,0.1);
-            padding: 30px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
         }
-        button {
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
             background: #ff6b6b;
             color: white;
             border: none;
             padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 18px;
+            border-radius: 50px;
+            font-size: 1.1rem;
             cursor: pointer;
-            margin: 10px;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
         }
-        button:hover {
-            transform: scale(1.05);
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
         }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .preview-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
         .icon-preview {
-            display: inline-block;
-            margin: 15px;
-            text-align: center;
-        }
-        .icon-preview img {
-            border: 3px solid white;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .icon-preview:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .icon-preview img {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border: 3px solid white;
+        }
+        
+        .icon-size {
+            font-weight: 600;
+            color: white;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        
+        .instructions ol {
+            padding-right: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .customization {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .preview-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .icon-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎨 יצירת אייקונים עבור AliExpress Tracker</h1>
-        <p>לחץ על הכפתור למטה כדי ליצור את כל האייקונים הנדרשים</p>
-        
-        <button onclick="generateAllIcons()">🛠️ צור אייקונים</button>
-        <button onclick="downloadAllIcons()">📥 הורד את כל האייקונים</button>
-        
-        <div id="previewContainer"></div>
-        <div id="status"></div>
+        <div class="header">
+            <h1>🎨 יצירת אייקונים עבור AliExpress Smart Tracker</h1>
+            <p>צור את כל האייקונים הנדרשים לאפליקציית ה-PWA שלך</p>
+        </div>
+
+        <div class="customization">
+            <h3>⚙️ התאמה אישית</h3>
+            <div class="form-group">
+                <label for="iconText">טקסט באייקון (אופציונלי):</label>
+                <input type="text" id="iconText" placeholder="🛒" value="🛒" maxlength="2">
+            </div>
+            <div class="form-group">
+                <label for="backgroundColor">צבע רקע:</label>
+                <input type="color" id="backgroundColor" value="#667eea">
+            </div>
+            <div class="form-group">
+                <label for="iconColor">צבע אייקון:</label>
+                <input type="color" id="iconColor" value="#ffffff">
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="generateAllIcons()" id="generateBtn">
+                    <i class="fas fa-magic"></i>
+                    צור את כל האייקונים
+                </button>
+                <button class="btn btn-secondary" onclick="downloadAllIcons()" id="downloadBtn" disabled>
+                    <i class="fas fa-download"></i>
+                    הורד את כל האייקונים
+                </button>
+                <button class="btn btn-secondary" onclick="previewAllIcons()">
+                    <i class="fas fa-eye"></i>
+                    תצוגה מקדימה
+                </button>
+                <button class="btn btn-secondary" onclick="resetIcons()">
+                    <i class="fas fa-redo"></i>
+                    איפוס
+                </button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="status" id="status">
+                לחץ על "צור את כל האייקונים" כדי להתחיל
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <h3>👁️ תצוגה מקדימה של האייקונים</h3>
+            <div class="preview-grid" id="previewContainer">
+                <!-- Icons will be populated here -->
+            </div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <h3>🎉 כל האייקונים נוצרו בהצלחה!</h3>
+            <p>לחץ על "הורד את כל האייקונים" כדי לשמור אותם למחשב שלך</p>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 הוראות התקנה</h3>
+            <ol>
+                <li>לחץ על <strong>"צור את כל האייקונים"</strong> כדי ליצור את כל הגדלים הנדרשים</li>
+                <li>אחרי שכל האייקונים נוצרו, לחץ על <strong>"הורד את כל האייקונים"</strong></li>
+                <li>צור תיקייה בשם <code>icons</code> בפרויקט שלך</li>
+                <li>העלה את כל קבצי ה-PNG לתיקיית <code>icons</code></li>
+                <li>וודא שהקבצים כוללים את הגדלים: 72x72, 96x96, 128x128, 144x144, 152x152, 167x167, 180x180, 192x192, 384x384, 512x512</li>
+                <li>רענן את האפליקציה - האייקונים החדשים יופיעו אוטומטית!</li>
+            </ol>
+            
+            <h4 style="margin-top: 20px; color: #ffd700;">📱 חשוב ל-iOS:</h4>
+            <ul>
+                <li>אייקון 180x180 - עבור iPhone Retina</li>
+                <li>אייקון 167x167 - עבור iPad Pro</li>
+                <li>אייקון 152x152 - עבור iPad Retina</li>
+            </ul>
+        </div>
     </div>
 
     <script>
-        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const sizes = [72, 96, 128, 144, 152, 167, 180, 192, 384, 512];
         const generatedIcons = [];
+        let totalIcons = sizes.length;
+        let completedIcons = 0;
 
         function generateAllIcons() {
             const status = document.getElementById('status');
-            const previewContainer = document.getElementById('previewContainer');
-            previewContainer.innerHTML = '';
+            const generateBtn = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const progressFill = document.getElementById('progressFill');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Reset
             generatedIcons.length = 0;
-
+            completedIcons = 0;
+            progressFill.style.width = '0%';
+            successMessage.style.display = 'none';
+            generateBtn.disabled = true;
+            downloadBtn.disabled = true;
+            
+            status.innerHTML = '🔄 מתחיל ליצור אייקונים...';
+            
             sizes.forEach((size, index) => {
                 setTimeout(() => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = size;
-                    canvas.height = size;
-                    const ctx = canvas.getContext('2d');
+                    createIcon(size, index);
+                }, index * 200);
+            });
+        }
 
-                    // רקע גרדיאנט
-                    const gradient = ctx.createLinearGradient(0, 0, size, size);
-                    gradient.addColorStop(0, '#667eea');
-                    gradient.addColorStop(1, '#764ba2');
-                    ctx.fillStyle = gradient;
-                    ctx.fillRect(0, 0, size, size);
+        function createIcon(size, index) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
 
-                    // עיגול פנימי
-                    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-                    ctx.beginPath();
-                    ctx.arc(size/2, size/2, size/2.5, 0, Math.PI * 2);
-                    ctx.fill();
+            // Get customization values
+            const backgroundColor = document.getElementById('backgroundColor').value;
+            const iconColor = document.getElementById('iconColor').value;
+            const iconText = document.getElementById('iconText').value || '🛒';
 
-                    // אייקון קניות
-                    ctx.fillStyle = '#667eea';
-                    ctx.font = `bold ${size/3}px Arial`;
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText('🛒', size/2, size/2);
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, backgroundColor);
+            gradient.addColorStop(1, lightenColor(backgroundColor, 20));
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
 
-                    // מסגרת
-                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-                    ctx.lineWidth = size/50;
-                    ctx.strokeRect(size/20, size/20, size - size/10, size - size/10);
+            // Add modern border
+            ctx.strokeStyle = lightenColor(backgroundColor, 30);
+            ctx.lineWidth = size / 30;
+            ctx.strokeRect(size / 20, size / 20, size - size / 10, size - size / 10);
 
-                    const dataURL = canvas.toDataURL('image/png');
-                    generatedIcons.push({ size, dataURL });
+            // Add inner circle for icon
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const radius = size / 2.8;
 
-                    // הצג תצוגה מקדימה
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Add shadow effect
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+            ctx.shadowBlur = size / 20;
+            ctx.shadowOffsetX = size / 50;
+            ctx.shadowOffsetY = size / 50;
+
+            // Add icon/text
+            ctx.fillStyle = iconColor;
+            ctx.font = `bold ${size / 3}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(iconText, centerX, centerY);
+
+            // Clear shadow
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            // Add final border
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = size / 80;
+            ctx.strokeRect(size / 15, size / 15, size - size / 7.5, size - size / 7.5);
+
+            const dataURL = canvas.toDataURL('image/png');
+            generatedIcons.push({ size, dataURL });
+            completedIcons++;
+
+            updateProgress();
+            updatePreview(size, dataURL);
+
+            if (completedIcons === totalIcons) {
+                finalizeGeneration();
+            }
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const status = document.getElementById('status');
+            const progress = (completedIcons / totalIcons) * 100;
+            
+            progressFill.style.width = `${progress}%`;
+            status.innerHTML = `🔄 יצירת אייקונים... ${completedIcons}/${totalIcons} (${Math.round(progress)}%)`;
+        }
+
+        function finalizeGeneration() {
+            const status = document.getElementById('status');
+            const generateBtn = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            status.innerHTML = '✅ כל האייקונים נוצרו בהצלחה!';
+            generateBtn.disabled = false;
+            downloadBtn.disabled = false;
+            successMessage.style.display = 'block';
+            
+            // Show notification
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('אייקונים נוצרו!', {
+                    body: `נוצרו ${generatedIcons.length} אייקונים בהצלחה`,
+                    icon: generatedIcons.find(icon => icon.size === 192).dataURL
+                });
+            }
+        }
+
+        function updatePreview(size, dataURL) {
+            const previewContainer = document.getElementById('previewContainer');
+            const existingPreview = document.querySelector(`[data-size="${size}"]`);
+            
+            if (existingPreview) {
+                existingPreview.querySelector('img').src = dataURL;
+            } else {
+                const preview = document.createElement('div');
+                preview.className = 'icon-preview';
+                preview.setAttribute('data-size', size);
+                preview.innerHTML = `
+                    <div style="position: relative;">
+                        <img src="${dataURL}" alt="Icon ${size}x${size}">
+                        <div class="icon-badge">${size}</div>
+                    </div>
+                    <div class="icon-size">${size}×${size}</div>
+                    <button onclick="downloadSingleIcon(${size})" style="
+                        background: rgba(255,255,255,0.2); 
+                        border: none; 
+                        color: white; 
+                        padding: 5px 10px; 
+                        border-radius: 5px; 
+                        cursor: pointer; 
+                        margin-top: 5px;
+                        font-size: 12px;">
+                        הורד
+                    </button>
+                `;
+                previewContainer.appendChild(preview);
+            }
+        }
+
+        function previewAllIcons() {
+            const previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = '';
+            
+            sizes.forEach(size => {
+                const existingIcon = generatedIcons.find(icon => icon.size === size);
+                if (existingIcon) {
+                    updatePreview(size, existingIcon.dataURL);
+                } else {
+                    // Create placeholder
                     const preview = document.createElement('div');
                     preview.className = 'icon-preview';
+                    preview.style.opacity = '0.5';
                     preview.innerHTML = `
-                        <img src="${dataURL}" width="80" height="80">
-                        <div>${size}x${size}</div>
+                        <div style="
+                            width: 80px; 
+                            height: 80px; 
+                            background: rgba(255,255,255,0.1); 
+                            border-radius: 15px; 
+                            margin: 0 auto 10px auto;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 24px;">
+                            ❓
+                        </div>
+                        <div class="icon-size">${size}×${size}</div>
+                        <div style="color: rgba(255,255,255,0.6); font-size: 12px;">לא נוצר</div>
                     `;
                     previewContainer.appendChild(preview);
-
-                    status.innerHTML = `נוצרו ${generatedIcons.length} מתוך ${sizes.length} אייקונים...`;
-
-                    if (generatedIcons.length === sizes.length) {
-                        status.innerHTML = '✅ כל האייקונים נוצרו בהצלחה!';
-                    }
-                }, index * 100);
+                }
             });
         }
 
         function downloadAllIcons() {
             if (generatedIcons.length === 0) {
-                alert('ראשית צור את האייקונים על ידי לחיצה על "צור אייקונים"');
+                alert('ראשית צור את האייקונים על ידי לחיצה על "צור את כל האייקונים"');
                 return;
             }
 
+            let downloaded = 0;
             generatedIcons.forEach(icon => {
-                const link = document.createElement('a');
-                link.download = `icon-${icon.size}.png`;
-                link.href = icon.dataURL;
-                link.click();
+                setTimeout(() => {
+                    downloadSingleIcon(icon.size);
+                    downloaded++;
+                    
+                    if (downloaded === generatedIcons.length) {
+                        setTimeout(() => {
+                            alert(`🎉 כל ${generatedIcons.length} האייקונים הורדו!\n\nהעלה אותם לתיקיית 'icons' בפרויקט שלך.`);
+                        }, 500);
+                    }
+                }, downloaded * 100);
             });
-
-            // הורד גם קובץ ZIP וירטואלי עם כל האייקונים
-            setTimeout(() => {
-                alert('📥 כל האייקונים הורדו! העלה אותם לתיקיית icons/ בפרויקט שלך.');
-            }, 1000);
         }
 
-        // צור אייקונים אוטומטית כשהדף נטען
-        window.onload = generateAllIcons;
+        function downloadSingleIcon(size) {
+            const icon = generatedIcons.find(i => i.size === size);
+            if (!icon) {
+                alert(`אייקון ${size}x${size} עדיין לא נוצר`);
+                return;
+            }
+
+            const link = document.createElement('a');
+            link.download = `icon-${size}.png`;
+            link.href = icon.dataURL;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function resetIcons() {
+            generatedIcons.length = 0;
+            completedIcons = 0;
+            
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('status').innerHTML = 'לחץ על "צור את כל האייקונים" כדי להתחיל';
+            document.getElementById('downloadBtn').disabled = true;
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('previewContainer').innerHTML = '';
+        }
+
+        function lightenColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return '#' + (
+                0x1000000 +
+                (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255)
+            ).toString(16).slice(1);
+        }
+
+        // Initialize preview on load
+        document.addEventListener('DOMContentLoaded', previewAllIcons);
+
+        // Request notification permission
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
     </script>
 </body>
 </html>
