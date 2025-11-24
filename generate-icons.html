@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>יצירת אייקונים - AliExpress Tracker</title>
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 50px;
+            direction: rtl;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .icon-preview {
+            display: inline-block;
+            margin: 15px;
+            text-align: center;
+        }
+        .icon-preview img {
+            border: 3px solid white;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 יצירת אייקונים עבור AliExpress Tracker</h1>
+        <p>לחץ על הכפתור למטה כדי ליצור את כל האייקונים הנדרשים</p>
+        
+        <button onclick="generateAllIcons()">🛠️ צור אייקונים</button>
+        <button onclick="downloadAllIcons()">📥 הורד את כל האייקונים</button>
+        
+        <div id="previewContainer"></div>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const generatedIcons = [];
+
+        function generateAllIcons() {
+            const status = document.getElementById('status');
+            const previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = '';
+            generatedIcons.length = 0;
+
+            sizes.forEach((size, index) => {
+                setTimeout(() => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = size;
+                    canvas.height = size;
+                    const ctx = canvas.getContext('2d');
+
+                    // רקע גרדיאנט
+                    const gradient = ctx.createLinearGradient(0, 0, size, size);
+                    gradient.addColorStop(0, '#667eea');
+                    gradient.addColorStop(1, '#764ba2');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, size, size);
+
+                    // עיגול פנימי
+                    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                    ctx.beginPath();
+                    ctx.arc(size/2, size/2, size/2.5, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // אייקון קניות
+                    ctx.fillStyle = '#667eea';
+                    ctx.font = `bold ${size/3}px Arial`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('🛒', size/2, size/2);
+
+                    // מסגרת
+                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                    ctx.lineWidth = size/50;
+                    ctx.strokeRect(size/20, size/20, size - size/10, size - size/10);
+
+                    const dataURL = canvas.toDataURL('image/png');
+                    generatedIcons.push({ size, dataURL });
+
+                    // הצג תצוגה מקדימה
+                    const preview = document.createElement('div');
+                    preview.className = 'icon-preview';
+                    preview.innerHTML = `
+                        <img src="${dataURL}" width="80" height="80">
+                        <div>${size}x${size}</div>
+                    `;
+                    previewContainer.appendChild(preview);
+
+                    status.innerHTML = `נוצרו ${generatedIcons.length} מתוך ${sizes.length} אייקונים...`;
+
+                    if (generatedIcons.length === sizes.length) {
+                        status.innerHTML = '✅ כל האייקונים נוצרו בהצלחה!';
+                    }
+                }, index * 100);
+            });
+        }
+
+        function downloadAllIcons() {
+            if (generatedIcons.length === 0) {
+                alert('ראשית צור את האייקונים על ידי לחיצה על "צור אייקונים"');
+                return;
+            }
+
+            generatedIcons.forEach(icon => {
+                const link = document.createElement('a');
+                link.download = `icon-${icon.size}.png`;
+                link.href = icon.dataURL;
+                link.click();
+            });
+
+            // הורד גם קובץ ZIP וירטואלי עם כל האייקונים
+            setTimeout(() => {
+                alert('📥 כל האייקונים הורדו! העלה אותם לתיקיית icons/ בפרויקט שלך.');
+            }, 1000);
+        }
+
+        // צור אייקונים אוטומטית כשהדף נטען
+        window.onload = generateAllIcons;
+    </script>
+</body>
+</html>

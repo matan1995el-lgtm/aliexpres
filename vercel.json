@@ -1,0 +1,50 @@
+{
+    "version": 2,
+    "name": "aliexpress-tracker",
+    "builds": [
+        {
+            "src": "**/*.js",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "**/*.html",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "**/*.css",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "**/*.json",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "**/*.png",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/service-worker.js",
+            "headers": {
+                "Cache-Control": "no-cache",
+                "Service-Worker-Allowed": "/"
+            }
+        },
+        {
+            "src": "/(.*)",
+            "headers": {
+                "X-Frame-Options": "DENY",
+                "X-Content-Type-Options": "nosniff",
+                "Referrer-Policy": "strict-origin-when-cross-origin"
+            }
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.html"
+        }
+    ],
+    "env": {
+        "NODE_ENV": "production"
+    }
+}
